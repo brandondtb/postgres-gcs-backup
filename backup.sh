@@ -26,7 +26,7 @@ SLACK_ICON=${SLACK_ICON:-}
 backup() {
   mkdir -p $BACKUP_DIR
   date=$(date "+%Y-%m-%dT%H:%M:%SZ")
-  archive_name="$JOB_NAME-backup-$date.sql.gz"
+  archive_name="$JOB_NAME-backup-$date.gz"
   cmd_auth_part=""
   if [[ ! -z $POSTGRES_USER ]] && [[ ! -z $POSTGRES_PASSWORD ]]
   then
@@ -40,7 +40,7 @@ backup() {
   fi
 
   export PGPASSWORD=$POSTGRES_PASSWORD
-  cmd="pg_dump --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part | gzip > $BACKUP_DIR/$archive_name"
+  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part | gzip > $BACKUP_DIR/$archive_name"
   echo "starting to backup PostGRES host=$POSTGRES_HOST port=$POSTGRES_PORT"
 
   eval "$cmd"
