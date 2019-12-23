@@ -65,7 +65,6 @@ default_api_version = 2
 [OAuth2]
 EOF
   fi
-  gcloud auth list
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
