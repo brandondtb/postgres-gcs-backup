@@ -40,6 +40,7 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
+  gcloud auth list 
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
