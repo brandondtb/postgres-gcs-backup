@@ -4,7 +4,7 @@ set -o pipefail
 set -o errexit
 set -o errtrace
 set -o nounset
-# set -o xtrace
+set -x
 
 JOB_NAME=${JOB_NAME:-default-job}
 BACKUP_DIR=${BACKUP_DIR:-/tmp}
