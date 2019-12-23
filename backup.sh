@@ -4,7 +4,6 @@ set -o pipefail
 set -o errexit
 set -o errtrace
 set -o nounset
-set -x
 
 JOB_NAME=${JOB_NAME:-default-job}
 BACKUP_DIR=${BACKUP_DIR:-/tmp}
@@ -40,7 +39,7 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
-  gcloud auth list 
+  gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
