@@ -16,7 +16,7 @@ POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
 
 backup() {
   mkdir -p $BACKUP_DIR
-  date=$(date "+%Y-%m-%dT%H:%M:%SZ")
+  date=$(date +"%Y%m%d%H%M")
   archive_name="$JOB_NAME-backup-$date.gz"
   cmd_auth_part=""
   if [[ ! -z $POSTGRES_USER ]] && [[ ! -z $POSTGRES_PASSWORD ]]
