@@ -13,6 +13,9 @@ POSTGRES_PORT=${POSTGRES_PORT:-5432}
 POSTGRES_DB=${POSTGRES_DB:-}
 POSTGRES_USER=${POSTGRES_USER:-}
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
+GCP_SERVICE_ACCOUNT_KEY_JSON=${GCP_SERVICE_ACCOUNT_KEY_JSON:-}
+
+echo $GCP_SERVICE_ACCOUNT_KEY_JSON > /tmp/service_account_key.json
 
 backup() {
   mkdir -p $BACKUP_DIR
@@ -39,7 +42,7 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
-  gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS
+  gcloud auth activate-service-account --key-file /tmp/service_account_key.json
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
