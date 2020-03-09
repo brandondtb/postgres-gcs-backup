@@ -17,7 +17,7 @@ GCP_SERVICE_ACCOUNT_KEY_JSON=${GCP_SERVICE_ACCOUNT_KEY_JSON:-}
 
 
 activate_service_account() {
-
+  gcloud iam service-accounts list
   echo $GCP_SERVICE_ACCOUNT_KEY_JSON > /tmp/service_account_key.json
   echo "Activating service account credentials"
   gcloud auth activate-service-account --key-file=/tmp/service_account_key.json
