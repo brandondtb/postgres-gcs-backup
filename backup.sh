@@ -41,8 +41,11 @@ backup() {
 }
 
 upload_to_gcs() {
-  echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
+
+  echo "Activating service account credentials"
   gcloud auth activate-service-account --key-file /tmp/service_account_key.json
+
+  echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
