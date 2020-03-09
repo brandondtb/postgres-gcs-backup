@@ -5,20 +5,16 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
-JOB_NAME=${JOB_NAME:-default-job}
-BACKUP_DIR=${BACKUP_DIR:-/tmp}
+JOB_NAME=${JOB_NAME:-}
 GCS_BUCKET=${GCS_BUCKET:-}
-POSTGRES_HOST=${POSTGRES_HOST:-localhost}
-POSTGRES_PORT=${POSTGRES_PORT:-5432}
+
+POSTGRES_HOST=${POSTGRES_HOST:-}
 POSTGRES_DB=${POSTGRES_DB:-}
 POSTGRES_USER=${POSTGRES_USER:-}
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
-SERVICE_ACCOUNT=${SERVICE_ACCOUNT: -}
+POSTGRES_PORT=${POSTGRES_PORT:-5432}
 
-
-activate_service_account() {
-  gcloud auth activate-service-account $SERVICE_ACCOUNT
-}
+BACKUP_DIR=${BACKUP_DIR:-/tmp}
 
 
 backup() {
@@ -63,8 +59,6 @@ cleanup() {
 
 
 trap err ERR
-
-activate_service_account
 
 backup
 
