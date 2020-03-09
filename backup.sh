@@ -15,7 +15,14 @@ POSTGRES_USER=${POSTGRES_USER:-}
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-}
 GCP_SERVICE_ACCOUNT_KEY_JSON=${GCP_SERVICE_ACCOUNT_KEY_JSON:-}
 
-echo $GCP_SERVICE_ACCOUNT_KEY_JSON > /tmp/service_account_key.json
+
+activate_service_account() {
+
+  echo $GCP_SERVICE_ACCOUNT_KEY_JSON > /tmp/service_account_key.json
+  echo "Activating service account credentials"
+  gcloud auth activate-service-account --key-file=/tmp/service_account_key.json
+}
+
 
 backup() {
   mkdir -p $BACKUP_DIR
@@ -40,11 +47,8 @@ backup() {
   eval "$cmd"
 }
 
+
 upload_to_gcs() {
-
-  echo "Activating service account credentials"
-  gcloud auth activate-service-account --key-file /tmp/service_account_key.json
-
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
   gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
@@ -55,12 +59,20 @@ err() {
   echo $err_msg >&2
 }
 
+
 cleanup() {
   rm $BACKUP_DIR/$archive_name
 }
 
+
 trap err ERR
+
+activate_service_account
+
 backup
+
 upload_to_gcs
+
 cleanup
+
 echo "backup done!"
