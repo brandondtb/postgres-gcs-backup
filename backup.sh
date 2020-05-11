@@ -44,7 +44,7 @@ backup() {
   fi
 
   export PGPASSWORD=$POSTGRES_PASSWORD
-  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part $exclude_table_args -f $BACKUP_DIR/$archive_name"
+  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part $exclude_table_args | gzip > $BACKUP_DIR/$archive_name"
   echo "starting to backup PostGRES host=$POSTGRES_HOST port=$POSTGRES_PORT"
 
   eval "$cmd"
