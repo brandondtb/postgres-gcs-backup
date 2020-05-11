@@ -20,11 +20,11 @@ EXCLUDE_TABLES=${EXCLUDE_TABLES:-}  # Space delimited list of tables
 
 
 backup() {
-  excluded_table_args=""
-  if [[ -z $EXCLUDED_TABLES ]]
+  exclude_table_args=""
+  if [[ -z $EXCLUDE_TABLES ]]
   then
-    for val in $EXCLUDED_TABLES; do
-      excluded_table_args="${excluded_table_args} -T ${val} "
+    for val in $EXCLUDE_TABLES; do
+      exclude_table_args="${exclude_table_args} -T ${val} "
     done
   fi
 
@@ -44,7 +44,7 @@ backup() {
   fi
 
   export PGPASSWORD=$POSTGRES_PASSWORD
-  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part $ecluded_table_args -f $BACKUP_DIR/$archive_name"
+  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part $eclude_table_args -f $BACKUP_DIR/$archive_name"
   echo "starting to backup PostGRES host=$POSTGRES_HOST port=$POSTGRES_PORT"
 
   eval "$cmd"
