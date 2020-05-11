@@ -21,7 +21,7 @@ EXCLUDE_TABLES=${EXCLUDE_TABLES:-}  # Space delimited list of tables
 
 backup() {
   exclude_table_args=""
-  if [[ -z $EXCLUDE_TABLES ]]
+  if [[ ! -z $EXCLUDE_TABLES ]]
   then
     for val in $EXCLUDE_TABLES; do
       exclude_table_args="${exclude_table_args} -T ${val} "
