@@ -5,6 +5,8 @@ set -o errexit
 set -o errtrace
 set -o nounset
 
+set -x
+
 JOB_NAME=${JOB_NAME:-}
 GCS_BUCKET=${GCS_BUCKET:-}
 GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-}
