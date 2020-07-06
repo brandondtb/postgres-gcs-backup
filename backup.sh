@@ -7,7 +7,7 @@ set -o nounset
 
 JOB_NAME=${JOB_NAME:-}
 GCS_BUCKET=${GCS_BUCKET:-}
-
+GCLOUD_SERVICE_ACCOUNT_FILE_PATH=${GCLOUD_SERVICE_ACCOUNT_FILE_PATH:-}
 POSTGRES_HOST=${POSTGRES_HOST:-}
 POSTGRES_DB=${POSTGRES_DB:-}
 POSTGRES_USER=${POSTGRES_USER:-}
@@ -53,7 +53,7 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
-  gsutil cp $BACKUP_DIR/$archive_name $GCS_BUCKET
+  gsutil "-o", "Credentials:gs_service_key_file=$GCLOUD_SERVICE_ACCOUNT_FILE_PATH", cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
 
