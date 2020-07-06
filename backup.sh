@@ -54,7 +54,16 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
-  gsutil "-o", "Credentials:gs_service_key_file=$GCLOUD_SERVICE_ACCOUNT_FILE_PATH", cp $BACKUP_DIR/$archive_name $GCS_BUCKET
+  cmd_creds_part=""
+
+  if [[ ! -z $GCLOUD_SERVICE_ACCOUNT_FILE_PATH ]]
+  then
+    cmd_creds_part="-o Credentials:gs_service_key_file=${GCLOUD_SERVICE_ACCOUNT_FILE_PATH}"
+  fi
+
+
+
+  gsutil ${cmd_creds_part} cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
 
 
