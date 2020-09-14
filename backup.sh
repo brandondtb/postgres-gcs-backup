@@ -26,7 +26,7 @@ backup() {
   exclude_table_args=""
   if [[ ! -z $EXCLUDE_TABLE_DATA ]]
   then
-    for val in $EXCLUDE_TABLES; do
+    for val in $EXCLUDE_TABLE_DATA; do
       exclude_table_args="${exclude_table_args} --exclude-table-data ${val} "
     done
   fi
