@@ -19,15 +19,15 @@ POSTGRES_PORT=${POSTGRES_PORT:-5432}
 
 BACKUP_DIR=${BACKUP_DIR:-/tmp}
 
-EXCLUDE_TABLES=${EXCLUDE_TABLES:-}  # Space delimited list of tables
+EXCLUDE_TABLE_DATA=${EXCLUDE_TABLE_DATA:-}  # Space delimited list of tables
 
 
 backup() {
   exclude_table_args=""
-  if [[ ! -z $EXCLUDE_TABLES ]]
+  if [[ ! -z $EXCLUDE_TABLE_DATA ]]
   then
     for val in $EXCLUDE_TABLES; do
-      exclude_table_args="${exclude_table_args} -T ${val} "
+      exclude_table_args="${exclude_table_args} --exclude-table-data ${val} "
     done
   fi
 
