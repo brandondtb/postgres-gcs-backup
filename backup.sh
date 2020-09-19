@@ -34,21 +34,10 @@ backup() {
   mkdir -p $BACKUP_DIR
   date=$(date +"%Y%m%d%H%M")
   archive_name="$JOB_NAME-backup-$date.gz"
-  cmd_auth_part=""
-  if [[ ! -z $POSTGRES_USER ]] && [[ ! -z $POSTGRES_PASSWORD ]]
-  then
-    cmd_auth_part="--username=\"$POSTGRES_USER\" "
-  fi
-
-  cmd_db_part=""
-  if [[ ! -z $POSTGRES_DB ]]
-  then
-    cmd_db_part="--db=\"$POSTGRES_DB\""
-  fi
 
   export PGPASSWORD=$POSTGRES_PASSWORD
-  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" $cmd_auth_part $cmd_db_part $exclude_table_args | gzip > $BACKUP_DIR/$archive_name"
-  echo "starting to backup PostGRES host=$POSTGRES_HOST port=$POSTGRES_PORT with exclude_table_args=$exclude_table_args"
+  cmd="pg_dump -Fc --host=\"$POSTGRES_HOST\" --port=\"$POSTGRES_PORT\" --username=\"$POSTGRES_USER\" $POSTGRES_DB $exclude_table_args | gzip > $BACKUP_DIR/$archive_name"
+  echo "starting to backup database $POSTGRES_DB host=$POSTGRES_HOST port=$POSTGRES_PORT with exclude_table_args=$exclude_table_args"
 
   eval "$cmd"
 }
@@ -56,14 +45,7 @@ backup() {
 
 upload_to_gcs() {
   echo "uploading backup archive to GCS bucket=$GCS_BUCKET"
-  cmd_creds_part=""
-
-  if [[ ! -z $GCLOUD_SERVICE_ACCOUNT_FILE_PATH ]]
-  then
-    cmd_creds_part="-o Credentials:gs_service_key_file=${GCLOUD_SERVICE_ACCOUNT_FILE_PATH}"
-  fi
-
-
+  cmd_creds_part="-o Credentials:gs_service_key_file=${GCLOUD_SERVICE_ACCOUNT_FILE_PATH}"
 
   gsutil ${cmd_creds_part} cp $BACKUP_DIR/$archive_name $GCS_BUCKET
 }
